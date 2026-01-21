@@ -101,6 +101,7 @@ ignore = [
     "ANN401", # Checks that function arguments are annotated with a more specific type than Any.
     "ERA001", # Checks for commented-out Python code.
     "A004",   # Shadowing Python Builtin
+    "EXE001",  # Shebang is present but file is not executable.
 ]
 
 [tool.ruff.lint.per-file-ignores]
