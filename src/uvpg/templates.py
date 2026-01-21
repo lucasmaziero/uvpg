@@ -101,12 +101,11 @@ ignore = [
     "ANN401", # Checks that function arguments are annotated with a more specific type than Any.
     "ERA001", # Checks for commented-out Python code.
     "A004",   # Shadowing Python Builtin
-    "EXE001",  # Shebang is present but file is not executable.
+    "EXE001", # Shebang is present but file is not executable.
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**/*.py" = ["ANN201", "S101", "ANN001"]
-"packages/**/tests/*.py" = ["ANN201", "S101", "ANN001"]
+"**/tests/**/*.py" = ["ANN201", "S101", "ANN001"]
 
 # ============================
 # Typing Configuration (Ty)
