@@ -28,7 +28,7 @@
 # ============================
 [project]
 name = "uvpg"
-version = "1.0.0"
+version = "1.0.1"
 description = "UV Project Generator - Create Python monorepos with workspaces."
 readme = "README.md"
 license = "MIT"
