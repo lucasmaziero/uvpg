@@ -1,10 +1,10 @@
 # uvpg - UV Project Generator
 
-[![PyPI version](https://img.shields.io/pypi/v/uvpg)](https://pypi.org/project/uvpg/)
+[![PyPI version](https://img.shields.io/pypi/v/uvpg)](https://pypi.org/project/uvpg)
 [![License](https://img.shields.io/pypi/l/uvpg)](https://github.com/lucasmaziero/uvpg/blob/main/LICENSE)
 [![Release and Publish](https://github.com/lucasmaziero/uvpg/actions/workflows/release.yml/badge.svg)](https://github.com/lucasmaziero/uvpg/actions/workflows/release.yml)
 
-A CLI tool to scaffold Python monorepo projects using [uv](https://docs.astral.sh/uv/) workspaces.
+A CLI tool to scaffold Python monorepo projects using [uv](https://docs.astral.sh/uv) workspaces.
 
 ## Features
 
@@ -38,7 +38,7 @@ uv build
 uv tool install dist/uvpg-*.whl
 
 # Or install with pip
-pip install dist/uvpg-*.whl --break-system-packages
+pip install dist/uvpg-*.whl
 ```
 
 ## Uninstall
