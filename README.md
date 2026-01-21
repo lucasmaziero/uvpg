@@ -4,6 +4,7 @@
 [![Python versions](https://img.shields.io/pypi/pyversions/uvpg)](https://pypi.org/project/uvpg/)
 [![Version](https://img.shields.io/pypi/v/uvpg?color=%2334D058&label=Version)](https://pypi.org/project/uvpg)
 [![License](https://img.shields.io/pypi/l/uvpg)](https://github.com/lucasmaziero/uvpg/blob/main/LICENSE)
+[![Release and Publish](https://github.com/lucasmaziero/uvpg/actions/workflows/release.yml/badge.svg)](https://github.com/lucasmaziero/uvpg/actions/workflows/release.yml)
 
 A CLI tool to scaffold Python monorepo projects using [uv](https://docs.astral.sh/uv/) workspaces.
 
