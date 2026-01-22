@@ -1,6 +1,7 @@
 # uvpg - UV Project Generator
 
 [![PyPI version](https://img.shields.io/pypi/v/uvpg?cache=false)](https://pypi.org/project/uvpg)
+[![Downloads](https://static.pepy.tech/badge/uvpg/month)](https://pepy.tech/project/uvpg)
 [![License](https://img.shields.io/pypi/l/uvpg?cache=false)](https://github.com/lucasmaziero/uvpg/blob/main/LICENSE)
 [![Release and Publish](https://github.com/lucasmaziero/uvpg/actions/workflows/release.yml/badge.svg)](https://github.com/lucasmaziero/uvpg/actions/workflows/release.yml)
 
