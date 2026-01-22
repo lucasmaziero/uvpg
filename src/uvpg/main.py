@@ -28,6 +28,7 @@ from uvpg.templates import (
     TEMPLATE_DOCKERIGNORE,
     TEMPLATE_GITIGNORE,
     TEMPLATE_LICENSE_MIT,
+    TEMPLATE_LINT_SCRIPT,
     TEMPLATE_MAIN_APP,
     TEMPLATE_PACKAGE_MAIN,
     TEMPLATE_PYPROJECT_PACKAGE,
@@ -124,7 +125,7 @@ def register_package_in_root(root: Path, package_name: str) -> None:
     pyproject_path.write_text(content)
 
 
-def create_project(
+def create_project(  # noqa: PLR0915
     name: str,
     packages: list[str] | None = None,
     python_version: str = PYTHON_VERSION_DEFAULT,
@@ -196,6 +197,11 @@ def create_project(
     clean_script = root / "scripts" / "project_clean.sh"
     clean_script.write_text(TEMPLATE_CLEAN_SCRIPT)
     clean_script.chmod(0o755)
+
+    # Lint script
+    lint_script = root / "scripts" / "project_lint.sh"
+    lint_script.write_text(TEMPLATE_LINT_SCRIPT)
+    lint_script.chmod(0o755)
 
     # Create initial packages
     if packages:

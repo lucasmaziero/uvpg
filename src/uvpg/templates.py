@@ -291,14 +291,13 @@ def hello() -> str:
 """
 
 TEMPLATE_CLEAN_SCRIPT = """\
-#!/bin/bash
-# Clean temporary files and caches
+#!/usr/bin/env bash
+set -euo pipefail
 
-set -e
-
-echo "Cleaning project..."
-
+# -------------------------
 # Python caches
+# -------------------------
+echo "Removing Python cache files"
 find . -type d -name '__pycache__' -exec rm -rf {} + 2>/dev/null || true
 find . -type d -name '*.egg-info' -exec rm -rf {} + 2>/dev/null || true
 find . -type f -name '*.pyc' -delete 2>/dev/null || true
@@ -306,11 +305,35 @@ find . -type d -name '.pytest_cache' -exec rm -rf {} + 2>/dev/null || true
 find . -type d -name '.ruff_cache' -exec rm -rf {} + 2>/dev/null || true
 find . -type f -name '*.Identifier' -delete 2>/dev/null || true
 
+# -------------------------
 # Build artifacts
-find . -type d -name "dist" -exec rm -rf {} + 2>/dev/null || true
-find . -type d -name "build" -exec rm -rf {} + 2>/dev/null || true
+# -------------------------
+echo "Removing build artifacts"
+find . -type d -name 'dist' -exec rm -rf {} + 2>/dev/null || true
+find . -type d -name 'build' -exec rm -rf {} + 2>/dev/null || true
+"""
 
-echo "Cleanup complete!"
+TEMPLATE_LINT_SCRIPT = """\
+#!/usr/bin/env bash
+set -euo pipefail
+
+# -------------------------
+# Ruff - Lint
+# -------------------------
+echo "Ruff: lint"
+ruff check
+
+# -------------------------
+# Ruff - Format check
+# -------------------------
+echo "Ruff: format check"
+ruff format --check
+
+# -------------------------
+# Ty - Type checking
+# -------------------------
+echo "Ty: type checking"
+ty check
 """
 
 TEMPLATE_LICENSE_MIT = """\
@@ -421,6 +444,13 @@ TEMPLATE_VSCODE_SETTINGS = """\
                 "command": "uv run pytest"
             }},
             {{
+                "name": "$(check)",
+                "tooltip": "Lint Project",
+                "singleInstance": true,
+                "cwd": "${{workspaceFolder}}",
+                "command": "uv run ruff check && uv run ruff format --check && uv run ty check"
+            }},
+            {{
                 "name": "$(terminal)",
                 "tooltip": "Open New Terminal",
                 "useVsCodeApi": true,
@@ -515,7 +545,23 @@ TEMPLATE_VSCODE_EXTENSIONS = """\
 """
 
 TEMPLATE_DOCKERFILE = """\
-FROM debian:trixie-slim AS builder
+################################################################################
+# Global Arguments
+################################################################################
+ARG UID=1000
+ARG GID=1000
+ARG USERNAME=python
+ARG PYTHON_VERSION={python_version}
+ARG DEBIAN_VERSION=trixie-slim
+ARG PYTHON_ENV=development
+
+################################################################################
+# Builder
+################################################################################
+FROM debian:${{DEBIAN_VERSION}} AS builder
+
+ARG PYTHON_VERSION
+ARG PYTHON_ENV
 
 RUN apt-get update \\
   && apt-get install -y --no-install-recommends build-essential \\
@@ -530,7 +576,7 @@ ENV UV_COMPILE_BYTECODE=1 \\
   UV_NO_DEV=1 \\
   UV_PYTHON_INSTALL_DIR=/python
 
-RUN uv python install {python_version}
+RUN uv python install ${{PYTHON_VERSION}}
 
 WORKDIR /app
 
@@ -543,14 +589,22 @@ RUN --mount=type=cache,target=/root/.cache/uv \\
 COPY . /app
 
 RUN --mount=type=cache,target=/root/.cache/uv \\
-  uv sync --frozen
+  mkdir -p /artifacts; \\
+  if [ "${{PYTHON_ENV}}" = "production" ]; then \\
+    uv sync --frozen --no-dev --no-editable; \\
+    find . -maxdepth 1 -mindepth 1 ! -name '.venv' -exec rm -rf {{}} +; \\
+  else \\
+    uv sync --frozen --no-dev; \\
+  fi
 
 ################################################################################
-FROM debian:trixie-slim AS runtime
+# Runtime
+################################################################################
+FROM debian:${{DEBIAN_VERSION}} AS runtime
 
-ARG UID=1000
-ARG GID=1000
-ARG USERNAME=python
+ARG UID
+ARG GID
+ARG USERNAME
 
 ENV PYTHONUNBUFFERED=1 \\
   PATH="/app/.venv/bin:${{PATH}}"
@@ -558,12 +612,12 @@ ENV PYTHONUNBUFFERED=1 \\
 RUN groupadd --gid ${{GID}} ${{USERNAME}} \\
   && useradd --uid ${{UID}} --gid ${{USERNAME}} --shell /bin/bash --create-home ${{USERNAME}}
 
+WORKDIR /app
+
 COPY --from=builder --chown=${{UID}}:${{GID}} /python /python
 COPY --from=builder --chown=${{UID}}:${{GID}} /app /app
 
 USER ${{USERNAME}}
-
-WORKDIR /app
 
 EXPOSE 8000
 
@@ -661,26 +715,28 @@ venv/
 TEMPLATE_COMPOSE = """\
 services:
   app:
-    pull_policy: never
     image: app
     container_name: app
+    pull_policy: never
     restart: unless-stopped
     build:
       context: .
+      args:
+        PYTHON_ENV: development
+        # PYTHON_ENV: production
       dockerfile: Dockerfile
       target: runtime
     ports:
-      - 8000:8000
+      - "8000:8000"
+
     develop:
       watch:
-        - action: sync+restart # this depends on the project
+        - action: sync+restart
           path: .
           target: /app
-
           ignore:
             - .venv/
             - __pycache__/
-
         - action: rebuild
           path: ./uv.lock
 """

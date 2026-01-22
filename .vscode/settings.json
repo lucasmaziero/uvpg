@@ -29,6 +29,13 @@
                 "command": "uv run pytest"
             },
             {
+                "name": "$(check)",
+                "tooltip": "Lint Project",
+                "singleInstance": true,
+                "cwd": "${workspaceFolder}",
+                "command": "uv run ruff check && uv run ruff format --check && uv run ty check"
+            },
+            {
                 "name": "$(terminal)",
                 "tooltip": "Open New Terminal",
                 "useVsCodeApi": true,
