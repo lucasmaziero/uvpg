@@ -82,10 +82,11 @@ def create_package(root: Path, name: str, python_version: str = PYTHON_VERSION_D
             name=name,
             package_name=package_name,
             python_version=python_version,
-        )
+        ),
+        encoding="utf-8",
     )
     (src_dir / "__init__.py").touch()
-    (src_dir / "main.py").write_text(TEMPLATE_PACKAGE_MAIN.format(name=name))
+    (src_dir / "main.py").write_text(TEMPLATE_PACKAGE_MAIN.format(name=name), encoding="utf-8")
     (package_dir / "tests" / "__init__.py").touch()
 
     # Register package in root pyproject.toml
@@ -100,7 +101,7 @@ def register_package_in_root(root: Path, package_name: str) -> None:
     if not pyproject_path.exists():
         return
 
-    content = pyproject_path.read_text()
+    content = pyproject_path.read_text(encoding="utf-8")
 
     # Add to dependencies = []
     if "dependencies = []" in content:
@@ -122,7 +123,7 @@ def register_package_in_root(root: Path, package_name: str) -> None:
     if "[tool.uv.sources]" in content and f"{package_name} = " not in content:
         content = content.replace("[tool.uv.sources]", f"[tool.uv.sources]\n{source_entry}")
 
-    pyproject_path.write_text(content)
+    pyproject_path.write_text(content, encoding="utf-8")
 
 
 def create_project(  # noqa: PLR0915
@@ -165,17 +166,21 @@ def create_project(  # noqa: PLR0915
             py_target=py_target,
             authors_name=authors_name,
             authors_email=authors_email,
-        )
+        ),
+        encoding="utf-8",
     )
-    (root / "README.md").write_text(TEMPLATE_README.format(name=name))
+    (root / "README.md").write_text(TEMPLATE_README.format(name=name), encoding="utf-8")
     (root / "LICENSE").write_text(
-        TEMPLATE_LICENSE_MIT.format(year=datetime.now(tz=UTC).year, authors_name=authors_name)
+        TEMPLATE_LICENSE_MIT.format(year=datetime.now(tz=UTC).year, authors_name=authors_name),
+        encoding="utf-8",
     )
-    (root / ".gitignore").write_text(TEMPLATE_GITIGNORE)
-    (root / ".python-version").write_text(f"{python_version}\n")
-    (root / "Dockerfile").write_text(TEMPLATE_DOCKERFILE.format(python_version=python_version))
-    (root / ".dockerignore").write_text(TEMPLATE_DOCKERIGNORE)
-    (root / "compose.yaml").write_text(TEMPLATE_COMPOSE)
+    (root / ".gitignore").write_text(TEMPLATE_GITIGNORE, encoding="utf-8")
+    (root / ".python-version").write_text(f"{python_version}\n", encoding="utf-8")
+    (root / "Dockerfile").write_text(
+        TEMPLATE_DOCKERFILE.format(python_version=python_version), encoding="utf-8"
+    )
+    (root / ".dockerignore").write_text(TEMPLATE_DOCKERIGNORE, encoding="utf-8")
+    (root / "compose.yaml").write_text(TEMPLATE_COMPOSE, encoding="utf-8")
 
     # Create VSCode config (detect OS for python path)
     if platform.system() == "Windows":
@@ -184,23 +189,24 @@ def create_project(  # noqa: PLR0915
         python_interpreter_path = "${workspaceFolder}/.venv/bin/python"
 
     (root / ".vscode" / "settings.json").write_text(
-        TEMPLATE_VSCODE_SETTINGS.format(python_interpreter_path=python_interpreter_path)
+        TEMPLATE_VSCODE_SETTINGS.format(python_interpreter_path=python_interpreter_path),
+        encoding="utf-8",
     )
-    (root / ".vscode" / "extensions.json").write_text(TEMPLATE_VSCODE_EXTENSIONS)
+    (root / ".vscode" / "extensions.json").write_text(TEMPLATE_VSCODE_EXTENSIONS, encoding="utf-8")
 
     # Create main app
     (root / "src" / "app" / "__init__.py").touch()
-    (root / "src" / "app" / "main.py").write_text(TEMPLATE_MAIN_APP)
+    (root / "src" / "app" / "main.py").write_text(TEMPLATE_MAIN_APP, encoding="utf-8")
     (root / "tests" / "__init__.py").touch()
 
     # Cleanup script
     clean_script = root / "scripts" / "project_clean.sh"
-    clean_script.write_text(TEMPLATE_CLEAN_SCRIPT)
+    clean_script.write_text(TEMPLATE_CLEAN_SCRIPT, encoding="utf-8")
     clean_script.chmod(0o755)
 
     # Lint script
     lint_script = root / "scripts" / "project_lint.sh"
-    lint_script.write_text(TEMPLATE_LINT_SCRIPT)
+    lint_script.write_text(TEMPLATE_LINT_SCRIPT, encoding="utf-8")
     lint_script.chmod(0o755)
 
     # Create initial packages
