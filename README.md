@@ -1,8 +1,9 @@
 # uvpg - UV Project Generator
 
-[![PyPI version](https://img.shields.io/pypi/v/uvpg?cache=false)](https://pypi.org/project/uvpg)
-[![Downloads](https://static.pepy.tech/badge/uvpg/month)](https://pepy.tech/project/uvpg)
-[![License](https://img.shields.io/pypi/l/uvpg?cache=false)](https://github.com/lucasmaziero/uvpg/blob/main/LICENSE)
+[![PyPI version](https://img.shields.io/pypi/v/uvpg)](https://pypi.org/project/uvpg)
+[![PyPI downloads](https://img.shields.io/pypi/dm/uvpg)](https://pypi.org/project/uvpg)
+[![PyPI total downloads](https://img.shields.io/pepy/dt/uvpg)](https://pypi.org/project/uvpg)
+[![License](https://img.shields.io/pypi/l/uvpg)](https://github.com/lucasmaziero/uvpg/blob/main/LICENSE)
 [![Release and Publish](https://github.com/lucasmaziero/uvpg/actions/workflows/release.yml/badge.svg)](https://github.com/lucasmaziero/uvpg/actions/workflows/release.yml)
 
 A CLI tool to scaffold Python monorepo projects using [uv](https://docs.astral.sh/uv) workspaces.
@@ -18,7 +19,7 @@ A CLI tool to scaffold Python monorepo projects using [uv](https://docs.astral.s
 - 💻 VSCode settings with recommended extensions
 - 🖥️ Auto-detects OS for correct Python interpreter path
 - 🐳 Docker support with multi-stage build and compose
-- ⚡ FastAPI + Uvicorn ready
+- ⚡ FastAPI + Uvicorn basic example included
 
 ## Installation
 
@@ -50,6 +51,16 @@ uv tool uninstall uvpg
 
 # Via pip
 pip uninstall uvpg
+```
+
+## Upgrade
+
+```bash
+# Via pip
+pip install --upgrade uvpg
+
+# Via uv
+uv tool upgrade uvpg
 ```
 
 ## Usage
@@ -108,7 +119,8 @@ my-project/
 │       │       └── main.py
 │       └── tests/
 ├── scripts/
-│   └── project_clean.sh    # Cleanup script
+│   ├── project_clean.sh    # Cleanup script
+│   └── project_lint.sh     # Lint script (Ruff, Ty)
 ├── src/
 │   └── app/
 │       ├── __init__.py
@@ -176,4 +188,4 @@ uv build
 
 ## License
 
-MIT License - See [LICENSE](LICENSE) for details.
+MIT License - See [LICENSE](https://github.com/lucasmaziero/uvpg/blob/main/LICENSE) for details.
