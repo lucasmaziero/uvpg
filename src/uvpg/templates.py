@@ -203,7 +203,7 @@ uv run app
 uv run python src/app/main.py
 
 # Run with auto-reload
-uv run watchfiles 'python src/app/main.py'
+uv run watchfiles app.main.main
 ```
 
 ### Docker
@@ -431,7 +431,7 @@ TEMPLATE_VSCODE_SETTINGS = """\
                 "tooltip": "Run Watch Files",
                 "singleInstance": true,
                 "cwd": "${{workspaceFolder}}",
-                "command": "uv run watchfiles 'python src/app/main.py'"
+                "command": "uv run watchfiles app.main.main"
             }}
         ]
     }},
@@ -696,6 +696,12 @@ help: ## Show this help message
 
 sync: ## Sync dependencies
 	uv sync
+
+run: ## Run the application
+	uv run app
+
+watch: ## Run with auto-reload (watchfiles)
+	uv run watchfiles app.main.main
 
 install: ## Install the package (for testing after build)
 	uv tool install dist/uvpg-*.whl
