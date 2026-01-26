@@ -177,9 +177,6 @@ uv sync
 # Run locally
 uv run uvpg --help
 
-# Run tests
-uv run pytest
-
 # Build
 uv build
 ```
