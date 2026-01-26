@@ -19,7 +19,7 @@
                 "tooltip": "Clean Project",
                 "singleInstance": true,
                 "cwd": "${workspaceFolder}",
-                "command": "bash scripts/project_clean.sh"
+                "command": "make clean"
             },
             {
                 "name": "$(beaker)",
@@ -33,20 +33,13 @@
                 "tooltip": "Lint Project",
                 "singleInstance": true,
                 "cwd": "${workspaceFolder}",
-                "command": "uv run ruff check && uv run ruff format --check && uv run ty check"
+                "command": "make check"
             },
             {
                 "name": "$(terminal)",
                 "tooltip": "Open New Terminal",
                 "useVsCodeApi": true,
                 "command": "workbench.action.terminal.new"
-            },
-            {
-                "name": "$(versions)",
-                "tooltip": "Python Version",
-                "singleInstance": true,
-                "cwd": "${workspaceFolder}",
-                "command": "uv run python --version"
             },
             {
                 "name": "$(package)",
@@ -60,7 +53,7 @@
                 "tooltip": "UV Build",
                 "singleInstance": true,
                 "cwd": "${workspaceFolder}",
-                "command": "uv build"
+                "command": "make build"
             },
             {
                 "name": "$(run)",

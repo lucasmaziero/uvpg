@@ -22,14 +22,13 @@ from importlib.metadata import version
 from pathlib import Path
 
 from uvpg.templates import (
-    TEMPLATE_CLEAN_SCRIPT,
     TEMPLATE_COMPOSE,
     TEMPLATE_DOCKERFILE,
     TEMPLATE_DOCKERIGNORE,
     TEMPLATE_GITIGNORE,
     TEMPLATE_LICENSE_MIT,
-    TEMPLATE_LINT_SCRIPT,
     TEMPLATE_MAIN_APP,
+    TEMPLATE_MAKEFILE,
     TEMPLATE_PACKAGE_MAIN,
     TEMPLATE_PYPROJECT_PACKAGE,
     TEMPLATE_PYPROJECT_ROOT,
@@ -126,7 +125,7 @@ def register_package_in_root(root: Path, package_name: str) -> None:
     pyproject_path.write_text(content, encoding="utf-8")
 
 
-def create_project(  # noqa: PLR0915
+def create_project(
     name: str,
     packages: list[str] | None = None,
     python_version: str = PYTHON_VERSION_DEFAULT,
@@ -153,7 +152,6 @@ def create_project(  # noqa: PLR0915
     root.mkdir(exist_ok=True)
     (root / "src" / "app").mkdir(parents=True)
     (root / "packages").mkdir()
-    (root / "scripts").mkdir()
     (root / "tests").mkdir()
     (root / ".vscode").mkdir()
 
@@ -181,6 +179,7 @@ def create_project(  # noqa: PLR0915
     )
     (root / ".dockerignore").write_text(TEMPLATE_DOCKERIGNORE, encoding="utf-8")
     (root / "compose.yaml").write_text(TEMPLATE_COMPOSE, encoding="utf-8")
+    (root / "Makefile").write_text(TEMPLATE_MAKEFILE, encoding="utf-8")
 
     # Create VSCode config (detect OS for python path)
     if platform.system() == "Windows":
@@ -198,16 +197,6 @@ def create_project(  # noqa: PLR0915
     (root / "src" / "app" / "__init__.py").touch()
     (root / "src" / "app" / "main.py").write_text(TEMPLATE_MAIN_APP, encoding="utf-8")
     (root / "tests" / "__init__.py").touch()
-
-    # Cleanup script
-    clean_script = root / "scripts" / "project_clean.sh"
-    clean_script.write_text(TEMPLATE_CLEAN_SCRIPT, encoding="utf-8")
-    clean_script.chmod(0o755)
-
-    # Lint script
-    lint_script = root / "scripts" / "project_lint.sh"
-    lint_script.write_text(TEMPLATE_LINT_SCRIPT, encoding="utf-8")
-    lint_script.chmod(0o755)
 
     # Create initial packages
     if packages:

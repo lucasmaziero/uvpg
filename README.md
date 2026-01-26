@@ -118,9 +118,6 @@ my-project/
 │       │       ├── __init__.py
 │       │       └── main.py
 │       └── tests/
-├── scripts/
-│   ├── project_clean.sh    # Cleanup script
-│   └── project_lint.sh     # Lint script (Ruff, Ty)
 ├── src/
 │   └── app/
 │       ├── __init__.py
@@ -132,6 +129,7 @@ my-project/
 ├── compose.yaml            # Docker Compose config
 ├── Dockerfile              # Multi-stage Docker build
 ├── LICENSE                 # MIT License
+├── Makefile                # Build automation
 ├── pyproject.toml          # Root config with workspace
 ├── README.md
 └── uv.lock
