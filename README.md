@@ -164,6 +164,16 @@ docker compose up --watch
 - Python >= 3.12
 - [uv](https://docs.astral.sh/uv/) package manager
 
+### Windows (for Makefile support)
+
+```bash
+# Install Make
+winget install --id=GnuWin32.Make -e
+
+# Use Git Bash terminal for make commands. Launch from batch/command line:
+start "" "%ProgramFiles%\Git\bin\bash.exe"
+```
+
 ## Development
 
 ```bash
