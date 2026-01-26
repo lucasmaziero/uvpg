@@ -781,7 +781,7 @@ build: clean ## Build package
 	uv build
 
 version: ## Show current version
-	uv version
+	@uv version
 
 version-patch: ## Bump patch version (0.1.0 -> 0.1.1)
 	@echo "Bumping patch version..."
