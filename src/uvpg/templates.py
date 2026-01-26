@@ -290,52 +290,6 @@ def hello() -> str:
     return "Hello from {name}!"
 """
 
-TEMPLATE_CLEAN_SCRIPT = """\
-#!/usr/bin/env bash
-set -euo pipefail
-
-# -------------------------
-# Python caches
-# -------------------------
-echo "Removing Python cache files"
-find . -type d -name '__pycache__' -exec rm -rf {} + 2>/dev/null || true
-find . -type d -name '*.egg-info' -exec rm -rf {} + 2>/dev/null || true
-find . -type f -name '*.pyc' -delete 2>/dev/null || true
-find . -type d -name '.pytest_cache' -exec rm -rf {} + 2>/dev/null || true
-find . -type d -name '.ruff_cache' -exec rm -rf {} + 2>/dev/null || true
-find . -type f -name '*.Identifier' -delete 2>/dev/null || true
-
-# -------------------------
-# Build artifacts
-# -------------------------
-echo "Removing build artifacts"
-find . -type d -name 'dist' -exec rm -rf {} + 2>/dev/null || true
-find . -type d -name 'build' -exec rm -rf {} + 2>/dev/null || true
-"""
-
-TEMPLATE_LINT_SCRIPT = """\
-#!/usr/bin/env bash
-set -euo pipefail
-
-# -------------------------
-# Ruff - Lint
-# -------------------------
-echo "Ruff: lint"
-ruff check
-
-# -------------------------
-# Ruff - Format check
-# -------------------------
-echo "Ruff: format check"
-ruff format --check
-
-# -------------------------
-# Ty - Type checking
-# -------------------------
-echo "Ty: type checking"
-ty check
-"""
-
 TEMPLATE_LICENSE_MIT = """\
 MIT License
 
@@ -765,7 +719,7 @@ security: ## Run security checks
 # 	@uvx bandit -r . -lll
 
 clean: ## Clean build artifacts
-	@echo "✅ Clean build artifacts"
+	@echo "Clean build artifacts"
 	@find . -type d -name '__pycache__' -exec rm -rf {} + 2>/dev/null || true
 	@find . -type d -name '*.egg-info' -exec rm -rf {} + 2>/dev/null || true
 	@find . -type f -name '*.pyc' -delete 2>/dev/null || true

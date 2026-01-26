@@ -183,7 +183,7 @@ def create_project(
 
     # Create VSCode config (detect OS for python path)
     if platform.system() == "Windows":
-        python_interpreter_path = "${workspaceFolder}\\.venv\\Scripts\\python.exe"
+        python_interpreter_path = "${workspaceFolder}\\\\.venv\\\\Scripts\\\\python.exe"
     else:
         python_interpreter_path = "${workspaceFolder}/.venv/bin/python"
 
