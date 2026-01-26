@@ -179,11 +179,12 @@ TEMPLATE_README = """\
 
 ```
 {name}/
-├── src/app/          # FastAPI application
+├── .vscode/          # VSCode settings
 ├── packages/         # Internal libraries (uv workspace)
-├── scripts/          # Utility scripts
+├── src/app/          # FastAPI application
 ├── tests/            # Test files
 ├── Dockerfile        # Multi-stage Docker build
+├── Makefile          # Build automation
 └── compose.yaml      # Docker Compose config
 ```
 
@@ -226,23 +227,17 @@ Once running, access:
 - **Docs:** http://localhost:8000/docs
 - **ReDoc:** http://localhost:8000/redoc
 
-## Development Commands
+## Makefile Commands
 
 ```bash
-# Run tests
-uv run pytest
-
-# Lint
-uv run ruff check .
-
-# Type check
-uv run ty check
-
-# Format
-uv run ruff format .
-
-# Clean project
-bash scripts/project_clean.sh
+make help       # Show available commands
+make sync       # Sync dependencies
+make lint       # Run linters
+make format     # Format code
+make type       # Run type checker
+make check      # Run all checks (format, lint, type)
+make clean      # Clean build artifacts
+make build      # Build package
 ```
 
 ## Add new package
